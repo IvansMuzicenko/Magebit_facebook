@@ -11,26 +11,25 @@ const closeMenu = function (evt) {
     .classList.remove("navbar__general--show");
 };
 
-setTimeout(() => {
-  document.querySelector(".show").classList.add("hide");
-  document.querySelector(".show").classList.remove("show");
-  document.querySelector(".hide").classList.remove("hide");
-  document.querySelector(".hide").classList.add("hide");
-}, 3000);
+// setTimeout(() => {
+//   document.querySelector(".show").classList.add("hide");
+//   document.querySelector(".show").classList.remove("show");
+//   document.querySelector(".hide").classList.remove("hide");
+//   document.querySelector(".hide").classList.add("hide");
+// }, 1000);
 
 let observer = new IntersectionObserver(
   (entries, observer) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         createPost();
-        observer.unobserve(entry.target);
       }
     });
   },
   {
     root: null,
     rootMargin: "0px",
-    threshold: 0.25,
+    threshold: 0,
   }
 );
 
@@ -41,6 +40,7 @@ const createPost = async function () {
   const newSkelet = document.createElement("div");
 
   newSkelet.classList.add("posts__post");
+  newSkelet.classList.add("skeleton");
   newSkelet.innerHTML = skeleton.innerHTML;
 
   area.append(newSkelet);
@@ -57,7 +57,11 @@ const createPost = async function () {
   newPost.querySelector(".posts__post__images__image").src =
     await getRandomImg();
 
-  newSkelet.remove();
+  const image = newPost.querySelector(".posts__post__images__image");
+
+  image.onload = function () {
+    newSkelet.remove();
+  };
   area.append(newPost);
   const lastPost = document.querySelector(".posts").lastChild;
   observer.observe(lastPost);
