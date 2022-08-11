@@ -23,6 +23,7 @@ let observer = new IntersectionObserver(
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         createPost();
+        observer.unobserve(entry.target);
       }
     });
   },
