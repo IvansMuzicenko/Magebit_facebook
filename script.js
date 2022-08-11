@@ -37,6 +37,13 @@ let observer = new IntersectionObserver(
 const createPost = async function () {
   const area = document.querySelector(".posts");
   const template = document.querySelector(".posts__post");
+  const skeleton = document.querySelector(".skeleton");
+  const newSkelet = document.createElement("div");
+
+  newSkelet.classList.add("posts__post");
+  newSkelet.innerHTML = skeleton.innerHTML;
+
+  area.append(newSkelet);
 
   const newPost = document.createElement("div");
   newPost.innerHTML = template.innerHTML;
@@ -50,6 +57,7 @@ const createPost = async function () {
   newPost.querySelector(".posts__post__images__image").src =
     await getRandomImg();
 
+  newSkelet.remove();
   area.append(newPost);
   const lastPost = document.querySelector(".posts").lastChild;
   observer.observe(lastPost);
